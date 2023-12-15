@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+// Desc: This is the main file for the application
 import './App.css';
 import PathfindingVisualizer from "./PathFindingVisualizer/PathfindingVisualizer";
 

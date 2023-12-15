@@ -14,8 +14,13 @@ export default class PathfindingVisualizer extends Component{
     componentDidMount() {
         const nodes = [];
         for(let row = 0; row < 15; row++){
-
+            const currentRow = [];
+            for (let col = 0; col < 50; col++){
+                currentRow.push([]);
+            }
+            nodes.push(currentRow);
         }
+        this.setState({nodes});
     }
 
     render() {
