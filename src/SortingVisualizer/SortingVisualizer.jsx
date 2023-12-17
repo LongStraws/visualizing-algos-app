@@ -1,4 +1,5 @@
 import React from "react";
+import "./SortingVisualizer.css";
 import Navbar from "../Components/NavBar";
 
 function SortingVisualizer() {

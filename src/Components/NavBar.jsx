@@ -1,30 +1,30 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useMatch, useResolvedPath } from "react-router-dom";
 import "./NavBar.css";
 
-const Navbar = () => {
-  const activeLink = "bg-blue-100 text-black";
-  const normalLink = "";
+export default function Navbar() {
+  //const activeLink = "bg-blue-100 text-black";
+  //const normalLink = "";
   return (
     <div className='navbar'>
       <div className='navbar-logo'>Pathfinding and Sorting Visualizer</div>
-      <u1 className='navbar-links'>
-        <NavLink
-          to='/'
-          className={({ isActive }) => (isActive ? activeLink : normalLink)}
-        >
-          PathFinding{" "}
-        </NavLink>
-        <NavLink
-          to='/SortingVisualizer'
-          className={({ isActive }) => (isActive = "active")}
-        >
-          {" "}
-          SortingVisualizer
-        </NavLink>
-      </u1>
+      <div className='navbar-links'>
+        <CustomLink to='/'>PathFinding </CustomLink>
+        <CustomLink to='/SortingVisualizer'> SortingVisualizer</CustomLink>
+      </div>
     </div>
   );
-};
+}
 
-export default Navbar;
+function CustomLink({ to, children, ...props }) {
+  const resolvedPath = useResolvedPath(to);
+  const isActive = useMatch({ path: resolvedPath.pathname, end: true });
+
+  return (
+    <li className={isActive ? "active" : ""}>
+      <NavLink to={to} {...props}>
+        {children}
+      </NavLink>
+    </li>
+  );
+}
