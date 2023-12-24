@@ -2,9 +2,10 @@ import React from "react";
 import "./SortingVisualizer.css";
 import Navbar from "../Components/NavBar";
 import { getMergeSortAnimations } from "./SortingAlgos/MergeSort";
+import { getBubbleSortAnimations } from "./SortingAlgos/BubbleSort";
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 1;
+const ANIMATION_SPEED_MS = 50;
 
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 310;
@@ -36,7 +37,8 @@ export default class SortingVisualizer extends React.Component {
   }
 
   mergeSort() {
-    const animations = getMergeSortAnimations(this.state.array);
+    const copy = this.state.array;
+    const animations = getMergeSortAnimations(copy);
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName("array-bar");
       const isColorChange = i % 3 !== 2;
@@ -59,6 +61,22 @@ export default class SortingVisualizer extends React.Component {
     }
   }
 
+  bubbleSort() {
+    const copy = this.state.array;
+    const animations = getBubbleSortAnimations(copy);
+
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName("array-bar");
+      {
+        const [i, j] = animations.shift();
+
+        setTimeout(() => {
+          arrayBars[i].style.height = arrayBars[j].style.height;
+        }, i * ANIMATION_SPEED_MS);
+      }
+    }
+  }
+
   render() {
     const { array } = this.state;
 
@@ -75,6 +93,7 @@ export default class SortingVisualizer extends React.Component {
           ))}
           <button onClick={() => this.resetArray()}>Generate New Array</button>
           <button onClick={() => this.mergeSort()}>MergeSort</button>
+          <button onClick={() => this.bubbleSort()}>BubbleSort</button>
         </div>
       </>
     );
