@@ -8,6 +8,7 @@ export function getBubbleSortAnimations(array) {
       if (array[i - 1] > array[i]) {
         [array[i - 1], array[i]] = [array[i], array[i - 1]];
         animations.push([i - 1, i]);
+        animations.push([i - 1, i]);
         swapped = true;
       }
     }
