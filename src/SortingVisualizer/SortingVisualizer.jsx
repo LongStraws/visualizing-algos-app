@@ -3,6 +3,7 @@ import "./SortingVisualizer.css";
 import Navbar from "../Components/NavBar";
 import { getMergeSortAnimations } from "./SortingAlgos/MergeSort";
 import { getBubbleSortAnimations } from "./SortingAlgos/BubbleSort";
+import { getInsertionSortAnimations } from "./SortingAlgos/InsertionSort";
 
 // Change this value for the speed of the animations.
 const ANIMATION_SPEED_MS = 1;
@@ -61,25 +62,37 @@ export default class SortingVisualizer extends React.Component {
     }
   }
 
-  bubbleSort() {
+  insertionSort() {
     const copy = this.state.array;
-    const animations = getBubbleSortAnimations(copy);
+    const animations = getInsertionSortAnimations(copy);
 
-    for (let k = 0; k < animations.length; k++) {
+    for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName("array-bar");
-      {
-        const [i, j] = animations[k];
-
+      const isColorChange = i % 2 !== 1;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 2 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(() => {
-          const temp = arrayBars[i].style.height;
-          arrayBars[i].style.height = arrayBars[j].style.height;
-          arrayBars[j].style.height = temp;
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * ANIMATION_SPEED_MS);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, barTwoIdx] = animations[i];
+          [
+            arrayBars[barOneIdx].style.height,
+            arrayBars[barTwoIdx].style.height,
+          ] = [
+            arrayBars[barTwoIdx].style.height,
+            arrayBars[barOneIdx].style.height,
+          ];
         }, i * ANIMATION_SPEED_MS);
       }
     }
   }
-
-  BubbleSort() {
+  bubbleSort() {
     const copy = this.state.array;
     const animations = getBubbleSortAnimations(copy);
 
@@ -126,7 +139,8 @@ export default class SortingVisualizer extends React.Component {
           ))}
           <button onClick={() => this.resetArray()}>Generate New Array</button>
           <button onClick={() => this.mergeSort()}>MergeSort</button>
-          <button onClick={() => this.BubbleSort()}>BubbleSort</button>
+          <button onClick={() => this.bubbleSort()}>BubbleSort</button>
+          <button onClick={() => this.insertionSort()}>Insertion Sort</button>
         </div>
       </>
     );
