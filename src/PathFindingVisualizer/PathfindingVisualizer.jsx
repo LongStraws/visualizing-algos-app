@@ -7,11 +7,6 @@ import {
 
 import "./PathfindingVisualizer.css";
 
-const START_NODE_ROW = 5;
-const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
-const FINISH_NODE_COL = 35;
-
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +16,22 @@ export default class PathfindingVisualizer extends Component {
   }
 
   componentDidMount() {
-    const grid = getInitialGrid();
-    this.setState({ grid });
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const row = Math.max(Math.floor(height / 25) - 7, 10);
+    const col = Math.floor(width / 25);
+    const startNode = {
+      row: 4,
+      col: 4,
+    };
+    const endNode = {
+      row: row - 5,
+      col: col - 5,
+    };
+    const grid = getInitialGrid(row, col, startNode, endNode);
+    grid[startNode.row][startNode.col].isStartNode = true;
+    grid[row - 5][col - 5].isEndNode = true;
+    this.setState({ grid, row, col, startNode, endNode });
   }
 
   handleMouseDown(row, col) {
@@ -68,8 +77,8 @@ export default class PathfindingVisualizer extends Component {
 
   visualizeDijkstra() {
     const { grid } = this.state;
-    const startNode = grid[START_NODE_ROW][START_NODE_COL];
-    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const startNode = grid[this.state.startNode.row][this.state.startNode.col];
+    const finishNode = grid[this.state.endNode.row][this.state.endNode.col];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
@@ -118,27 +127,29 @@ export default class PathfindingVisualizer extends Component {
   }
 }
 
-const getInitialGrid = () => {
+const getInitialGrid = (totRow, totCol, startNode, endNode) => {
   const grid = [];
-  for (let row = 0; row < 20; row++) {
+  for (let row = 0; row < totRow; row++) {
     const currentRow = [];
-    for (let col = 0; col < 50; col++) {
-      currentRow.push(createNode(col, row));
+    for (let col = 0; col < totCol; col++) {
+      currentRow.push(createNode(row, col, startNode, endNode));
     }
     grid.push(currentRow);
   }
   return grid;
 };
 
-const createNode = (col, row) => {
+const createNode = (row, col, startNode, endNode) => {
   return {
-    col,
     row,
-    isStart: row === START_NODE_ROW && col === START_NODE_COL,
-    isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
-    distance: Infinity,
-    isVisited: false,
+    col,
     isWall: false,
+    isStart: row === startNode.row && col === startNode.col,
+    isFinish: row === endNode.row && col === endNode.col,
+    distance: Infinity,
+    visitedNode: false,
+    isVisited: false,
+    ispathNode: false,
     previousNode: null,
   };
 };

@@ -10,3 +10,21 @@
   margin: 0 1px;
   background-color: grey;
 }
+
+.buttons-start {
+  background-color: white; /* Green */
+  border: 1px solid black;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.buttons-start:hover {
+  color: grey;
+}
+.buttons-start:active {
+  background-color: grey;
+}

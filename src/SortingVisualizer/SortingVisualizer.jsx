@@ -9,7 +9,7 @@ import { getInsertionSortAnimations } from "./SortingAlgos/InsertionSort";
 const ANIMATION_SPEED_MS = 1;
 
 // Change this value for the number of bars (value) in the array.
-const NUMBER_OF_ARRAY_BARS = 310;
+//const NUMBER_OF_ARRAY_BARS = 310;
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = "turquoise";
@@ -30,8 +30,12 @@ export default class SortingVisualizer extends React.Component {
   }
 
   resetArray() {
+    const width = window.innerWidth;
+    console.log(width);
+    const bars = Math.max(Math.floor(width / 5.5), 10);
+    console.log(bars);
     const array = [];
-    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+    for (let i = 0; i < bars; i++) {
       array.push(randomIntFromInterval(5, 550));
     }
     this.setState({ array });
@@ -129,6 +133,23 @@ export default class SortingVisualizer extends React.Component {
     return (
       <>
         <Navbar />
+        <div>
+          <button className={"buttons-start"} onClick={() => this.resetArray()}>
+            Generate New Array
+          </button>
+          <button className={"buttons-start"} onClick={() => this.mergeSort()}>
+            MergeSort
+          </button>
+          <button className={"buttons-start"} onClick={() => this.bubbleSort()}>
+            BubbleSort
+          </button>
+          <button
+            className={"buttons-start"}
+            onClick={() => this.insertionSort()}
+          >
+            Insertion Sort
+          </button>
+        </div>
         <div className='array-container'>
           {array.map((value, idx) => (
             <div
@@ -137,10 +158,6 @@ export default class SortingVisualizer extends React.Component {
               style={{ height: `${value}px` }}
             ></div>
           ))}
-          <button onClick={() => this.resetArray()}>Generate New Array</button>
-          <button onClick={() => this.mergeSort()}>MergeSort</button>
-          <button onClick={() => this.bubbleSort()}>BubbleSort</button>
-          <button onClick={() => this.insertionSort()}>Insertion Sort</button>
         </div>
       </>
     );
