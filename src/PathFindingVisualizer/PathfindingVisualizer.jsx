@@ -5,6 +5,8 @@ import {
   getNodesInShortestPathOrder,
 } from "./PathFindingAlgos/dijkstra"; // import dijkstra algorithm
 
+import { dfs } from "./PathFindingAlgos/depthfirstsearch";
+
 import "./PathfindingVisualizer.css";
 
 export default class PathfindingVisualizer extends Component {
@@ -84,6 +86,15 @@ export default class PathfindingVisualizer extends Component {
     this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
+  visualizeDFS() {
+    const { grid } = this.state;
+    const startNode = grid[this.state.startNode.row][this.state.startNode.col];
+    const finishNode = grid[this.state.endNode.row][this.state.endNode.col];
+    const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  }
+
   render() {
     const { grid, mouseIsPressed } = this.state;
 
@@ -94,6 +105,12 @@ export default class PathfindingVisualizer extends Component {
           onClick={() => this.visualizeDijkstra()}
         >
           Visualize Dijkstra's Algorithm
+        </button>
+        <button
+          className={"dijkstra-start"}
+          onClick={() => this.visualizeDFS()}
+        >
+          Visualize DFS Algorithm
         </button>
         <div className='grid'>
           {grid.map((row, rowIdx) => {

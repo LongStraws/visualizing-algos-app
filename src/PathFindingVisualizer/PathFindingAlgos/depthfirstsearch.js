@@ -1,59 +1,33 @@
-export function dfs(grid, startNode, finishNode) {
-  const visitedNodesInOrder = [];
-  const unvisitedNodes = getAllNodes(grid);
-  while (!!unvisitedNodes.length) {
-    const closestNode = unvisitedNodes.shift();
-    // If we encounter a wall, we skip it.
-    if (closestNode.isWall) continue;
-    // If the closest node is at a distance of infinity,
-    // we must be trapped and should therefore stop.
-    if (closestNode.distance === Infinity) return visitedNodesInOrder;
-    closestNode.isVisited = true;
-    visitedNodesInOrder.push(closestNode);
-    if (closestNode === finishNode) return visitedNodesInOrder;
-    updateUnvisitedNeighbors(closestNode, grid);
-  }
-}
-
-function sortNodesByDistance(unvisitedNodes) {
-  unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
-}
-
-function updateUnvisitedNeighbors(node, grid) {
-  const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
-  for (const neighbor of unvisitedNeighbors) {
-    neighbor.previousNode = node;
-  }
-}
-
-function getUnvisitedNeighbors(node, grid) {
-  const neighbors = [];
-  const { col, row } = node;
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter((neighbor) => !neighbor.isVisited);
-}
-
-function getAllNodes(grid) {
-  const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
-      nodes.push(node);
+export function dfs(grid, startNode, endNode, algo) {
+  var list = [];
+  const nodesInOrder = [];
+  nodesInOrder.push(startNode);
+  list.push(startNode);
+  startNode.isVisited = true;
+  while (!!list.length) {
+    const currentNode = list.pop();
+    nodesInOrder.push(currentNode);
+    if (currentNode === endNode) return nodesInOrder;
+    currentNode.isVisited = true;
+    const nodesToPush = getNeighbours(grid, currentNode);
+    for (const node of nodesToPush) {
+      node.previousNode = currentNode;
+      list.push(node);
     }
   }
-  return nodes;
+  return nodesInOrder;
 }
 
-// Backtracks from the finishNode to find the shortest path.
-// Only works when called *after* the dijkstra method above.
-export function getNodesInShortestPathOrder(finishNode) {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.previousNode;
-  }
-  return nodesInShortestPathOrder;
+function getNeighbours(grid, node) {
+  const neighbors = [];
+  const { col, row } = node;
+  // console.log(node);
+
+  if (col > 0) neighbors.push(grid[row][col - 1]);
+  if (row > 0) neighbors.push(grid[row - 1][col]);
+  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  return neighbors.filter(
+    (neighbor) => !neighbor.isVisited && !neighbor.isWall
+  );
 }

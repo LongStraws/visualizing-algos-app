@@ -107,7 +107,7 @@ export default class SortingVisualizer extends React.Component {
         const [barOneIdx, barTwoIdx] = animations[i];
         const barOneStyle = arrayBars[barOneIdx].style;
         const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 2 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+        const color = i % 2 === 0 ? "grey" : "grey";
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
           barTwoStyle.backgroundColor = color;
@@ -143,12 +143,12 @@ export default class SortingVisualizer extends React.Component {
           <button className={"buttons-start"} onClick={() => this.bubbleSort()}>
             BubbleSort
           </button>
-          <button
+          {/* <button
             className={"buttons-start"}
             onClick={() => this.insertionSort()}
           >
             Insertion Sort
-          </button>
+          </button> */}
         </div>
         <div className='array-container'>
           {array.map((value, idx) => (
