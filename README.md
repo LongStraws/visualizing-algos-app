@@ -1,5 +1,6 @@
 # Pathfinding and Sorting Algorithm Visualizer
 
+You can visit the website here: (https://LongStraws.github.io/visualizing-algos-app/)
 A visualization of common pathfinding algorithms and sorting algorithms, made with Javascript and React
 
 ### Inspirations and Resources Used
