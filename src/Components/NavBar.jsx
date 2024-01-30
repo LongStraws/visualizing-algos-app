@@ -9,7 +9,7 @@ export default function Navbar() {
     <div className='navbar'>
       <div className='navbar-logo'>Pathfinding and Sorting Visualizer</div>
       <div className='navbar-links'>
-        <CustomLink to='/'>PathFinding </CustomLink>
+        <CustomLink to='/visualizing-algos-app'>PathFinding </CustomLink>
         <CustomLink to='/SortingVisualizer'> SortingVisualizer</CustomLink>
       </div>
     </div>
